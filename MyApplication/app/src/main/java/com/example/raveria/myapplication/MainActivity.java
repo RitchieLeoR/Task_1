@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         // find the elements
         etIncome = (EditText) findViewById(R.id.etIncome);
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn9.setOnClickListener(this);
         btn0.setOnClickListener(this);
         btnClear.setOnClickListener(this);
-        btnDelete. setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
         etIncome.setOnFocusChangeListener(this);
         etOutcome.setOnFocusChangeListener(this);
 
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.fab:
                 if(!etIncome.getText().equals("") && !etOutcome.getText().equals("")) {
-                    tvBalance.setText(Integer.valueOf(etIncome.getText().toString()) - Integer.valueOf(etOutcome.getText().toString()));
+                    tvBalance.setText("Balance: " + (String.valueOf(Integer.valueOf(etIncome.getText().toString()) - Integer.valueOf(etOutcome.getText().toString()))));
                 }
                 break;
         }
