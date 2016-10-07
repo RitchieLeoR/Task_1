@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_settings">Settings</string>
+    <string name="kp1">1</string>
+    <string name="kp2">2</string>
+    <string name="kp3">3</string>
+    <string name="kp4">4</string>
+    <string name="kp5">5</string>
+    <string name="kp6">6</string>
+    <string name="kp7">7</string>
+    <string name="kp8">8</string>
+    <string name="kp9">9</string>
+    <string name="kp0">0</string>
+    <string name="kpc">Clear</string>
+    <string name="kpdel">Del</string>
+</resources>
