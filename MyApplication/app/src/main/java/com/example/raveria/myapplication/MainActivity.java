@@ -1,6 +1,8 @@
 package com.example.raveria.myapplication;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,8 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import java.lang.reflect.Method;
 
 import java.lang.Object;
 
@@ -21,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText etIncome;
     EditText etOutcome;
+    EditText edTxtResult;
+    TextView txtResult;
     TextView tvBalance;
 
     Button btn1;
@@ -39,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String SET_VAL;
     String SET_FOC;
 
+    int curs;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        etIncome.setInputType(InputType.TYPE_NULL);
-        etOutcome.setInputType(InputType.TYPE_NULL);
+//        etIncome.setInputType(InputType.TYPE_NULL);
+//        etOutcome.setInputType(InputType.TYPE_NULL);
 
         btn1 = (Button) findViewById(R.id.btn1);
         btn2 = (Button) findViewById(R.id.btn2);
@@ -160,6 +169,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etIncome.setOnFocusChangeListener(this);
         etOutcome.setOnFocusChangeListener(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            etIncome.setShowSoftInputOnFocus(false);
+            etOutcome.setShowSoftInputOnFocus(false);
+        } else {
+            try {
+                final Method method = EditText.class.getMethod(
+                        "setShowSoftInputOnFocus"
+                        , new Class[]{boolean.class});
+                method.setAccessible(true);
+                method.invoke(etIncome, false);
+                method.invoke(etOutcome, false);
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         fab.setOnClickListener(this);
@@ -193,70 +218,96 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn1:
                 SET_VAL = "1";
+                addInput(SET_VAL);
                 break;
             case R.id.btn2:
                 SET_VAL = "2";
+                addInput(SET_VAL);
                 break;
             case R.id.btn3:
                 SET_VAL = "3";
+                addInput(SET_VAL);
                 break;
             case R.id.btn4:
                 SET_VAL = "4";
+                addInput(SET_VAL);
                 break;
             case R.id.btn5:
                 SET_VAL = "5";
+                addInput(SET_VAL);
                 break;
             case R.id.btn6:
                 SET_VAL = "6";
+                addInput(SET_VAL);
                 break;
             case R.id.btn7:
                 SET_VAL = "7";
+                addInput(SET_VAL);
                 break;
             case R.id.btn8:
                 SET_VAL = "8";
+                addInput(SET_VAL);
                 break;
             case R.id.btn9:
                 SET_VAL = "9";
+                addInput(SET_VAL);
                 break;
             case R.id.btn0:
                 SET_VAL = "0";
+                addInput(SET_VAL);
                 break;
             case R.id.btnClear:
                 if(SET_FOC.equals("income")){
                     etIncome.setText("");
+                    curs = etIncome.getSelectionStart();
                 }
                 else if(SET_FOC.equals("outcome")){
                     etOutcome.setText("");
+                    curs = etOutcome.getSelectionStart();
                 }
                 break;
             case R.id.btnDelete:
                 if(SET_FOC.equals("income")){
-                    if(etIncome.length()>0)
-                        etIncome.setText(etIncome.getText().toString().substring(0, etIncome.length()-1));
+                    curs = etIncome.getSelectionStart();
+                    if(etIncome.length()>0) {
+                        etIncome.getText().delete(curs-1, curs);
+                    }
                 }
                 else if(SET_FOC.equals("outcome")){
+                    curs = etOutcome.getSelectionStart();
                     if(etOutcome.length()>0)
-                        etOutcome.setText(etOutcome.getText().toString().substring(0, etOutcome.length()-1));
+                        etOutcome.getText().delete(curs-1, curs);
                 }
                 break;
             case R.id.fab:
-                if(!etIncome.getText().equals("") && !etOutcome.getText().equals("")) {
+                curs = etIncome.getSelectionStart();
+                if(!etIncome.getText().toString().isEmpty() && !etOutcome.getText().toString().isEmpty()) {
                     tvBalance.setText("Balance: " + (String.valueOf(Integer.valueOf(etIncome.getText().toString()) - Integer.valueOf(etOutcome.getText().toString()))));
                 }
                 break;
         }
 
-        if(!SET_VAL.equals("")){
-            if(SET_FOC.equals("income")){
-                etIncome.setText(etIncome.getText()+SET_VAL);
-            }
-            else if(SET_FOC.equals("outcome")){
-                etOutcome.setText(etOutcome.getText()+SET_VAL);
-            }
-        }
+
         // defines the button that has been clicked and performs the corresponding operation
         // write operation into oper, we will use it later for output
 
+    }
+
+    public void addInput(String input) {
+        if(!SET_VAL.equals("")){
+            if(SET_FOC.equals("income")){
+                curs = etIncome.getSelectionStart();
+                etIncome.getText().insert(curs, SET_VAL);
+                curs++;
+                etIncome.setSelection(curs);
+            }
+            else if(SET_FOC.equals("outcome")){
+                curs = etOutcome.getSelectionStart();
+                etOutcome.getText().insert(curs, SET_VAL);
+                curs++;
+                etOutcome.setSelection(curs);
+            }
+        }
     }
 
 
