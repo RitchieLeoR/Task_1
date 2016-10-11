@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View.OnTouchListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText etIncome;
     EditText etOutcome;
-    EditText edTxtResult;
-    TextView txtResult;
     TextView tvBalance;
 
     Button btn1;
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String SET_FOC;
 
     int curs;
+
+    Animation shake;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -81,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         tvBalance = (TextView) findViewById(R.id.tvBalance);
+
+        shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+
 
 
         // set a listener
@@ -281,8 +286,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.fab:
                 curs = etIncome.getSelectionStart();
+                v.startAnimation(shake);
                 if(!etIncome.getText().toString().isEmpty() && !etOutcome.getText().toString().isEmpty()) {
-                    tvBalance.setText("Balance: " + (String.valueOf(Integer.valueOf(etIncome.getText().toString()) - Integer.valueOf(etOutcome.getText().toString()))));
+                    tvBalance.setText(getString(R.string.bal) + ": " + (String.valueOf(Integer.valueOf(etIncome.getText().toString()) - Integer.valueOf(etOutcome.getText().toString()))));
                 }
                 break;
         }
@@ -323,4 +329,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
 }
